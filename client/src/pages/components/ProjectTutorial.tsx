@@ -4,6 +4,8 @@ import jsPDF from "jspdf";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import html2canvas from "html2canvas";
+import "perfect-scrollbar/css/perfect-scrollbar.css";
+import PerfectScrollbar from "react-perfect-scrollbar";
 
 interface ProjectTutorialProps {
   tutorial: string;
@@ -62,28 +64,32 @@ const ProjectTutorial: React.FC<ProjectTutorialProps> = ({ tutorial }) => {
         <Typography variant="h6" gutterBottom sx={{ color: "#00bfa5" }}>
           Project Tutorial
         </Typography>
-        <Box
-          ref={tutorialRef}
-          sx={{
-            maxHeight: "700px",
-            overflowY: "auto",
-            border: "1px solid #555",
-            borderRadius: "8px",
-            padding: "16px",
-            backgroundColor: "#1e1e1e",
-            boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            className="prose prose-invert "
+        <PerfectScrollbar>
+          <Box
+            ref={tutorialRef}
+            sx={{
+              maxHeight: "700px",
+              overflowY: "auto",
+
+              border: "1px solid #555",
+              borderRadius: "8px",
+              padding: "16px",
+              backgroundColor: "#1e1e1e",
+              boxShadow: "0 0 10px rgba(0, 0, 0, 0.3)",
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+            }}
           >
-            {tutorialContent}
-          </ReactMarkdown>
-        </Box>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              className="prose prose-invert "
+            >
+              {tutorialContent}
+            </ReactMarkdown>
+          </Box>
+        </PerfectScrollbar>
+
         <div className="flex justify-between">
           <Button
             onClick={() => setAutoscroll(!autoscroll)}

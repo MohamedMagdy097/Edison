@@ -34,6 +34,7 @@
     "react-before-after-slider-component": "^1.1.8",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
+    "react-perfect-scrollbar": "^1.5.8",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.14.1",
     "react-zoom-pan-pinch": "^3.6.1",

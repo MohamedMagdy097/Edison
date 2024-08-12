@@ -320,14 +320,14 @@ const UploadPage: React.FC = () => {
               <Box sx={{ mt: 4, width: "100%" }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="h6" align="center" gutterBottom>
+                    <Typography variant="h6" align="left" gutterBottom>
                       Contributors
                     </Typography>
                     <Box
                       sx={{
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "center",
+                        alignItems: "start",
                       }}
                     >
                       {contributors.map((contributor, index) => (

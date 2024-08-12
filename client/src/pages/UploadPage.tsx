@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Box, CircularProgress, IconButton, Divider } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Divider,
+  Typography,
+  Grid,
+  styled,
+  Link,
+} from "@mui/material";
 import StopIcon from "@mui/icons-material/Stop";
 import { analyzeImage, getProjectDetails } from "../services/api";
 import FileUpload from "./components/FileUpload";
@@ -8,6 +17,38 @@ import ProjectIdeasList from "./components/ProjectIdeasList";
 import ProjectTutorial from "./components/ProjectTutorial";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import robot from "../assets/Bot.webp";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import MenuIcon from "@mui/icons-material/Menu";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import { theme } from "../theme";
+const ContributorLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  textDecoration: "none",
+  display: "inline-flex",
+  alignItems: "center",
+  marginLeft: theme.spacing(1),
+  "&:hover": {
+    color: theme.palette.primary.main,
+  },
+}));
+const contributors = [
+  {
+    name: "Ahmed Mansy",
+    linkedin: "https://www.linkedin.com/in/ahmed-mansy/",
+    twitter: "https://x.com/Ahmedz14z",
+  },
+  {
+    name: "Mohamed Magdy",
+    linkedin: "https://www.linkedin.com/in/mohamedmagdy097",
+    twitter: "#",
+  },
+  { name: "Kang Hojin", linkedin: "#", twitter: "#" },
+  { name: "Vicky", linkedin: "#", twitter: "#" },
+  { name: "Ali Khan", linkedin: "#", twitter: "#" },
+  { name: "Imran", linkedin: "#", twitter: "#" },
+];
 const UploadPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [components, setComponents] = useState<string[]>([]);
@@ -209,29 +250,102 @@ const UploadPage: React.FC = () => {
         </motion.div>
         <AnimatePresence>
           {showImage && (
-            <>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               <motion.div
-                style={{ width: "1px", backgroundColor: "#e0e0e0" }}
-                variants={fadeOutAndSlide}
-                initial="initial"
-                exit="exit"
-              >
-                <Divider orientation="vertical" flexItem />
-              </motion.div>
-              <motion.img
-                src={robot}
-                alt="robot"
                 style={{
-                  maxWidth: "400px",
-                  height: "460px",
-                  borderRadius: "50px",
+                  position: "relative",
+                  width: "400px",
+                  height: "225px",
+                  borderRadius: "12px",
+                  overflow: "hidden",
                   boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
                 }}
                 initial={{ opacity: 1, scale: 1 }}
                 animate={imageControls}
                 exit={{ opacity: 0, scale: 0.9 }}
-              />
-            </>
+              >
+                {/* IFRAME HERE!! */}
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/HfTonOn_Yf8"
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </motion.div>
+
+              <Box sx={{ mt: 4, width: "100%" }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="h6" align="left" gutterBottom>
+                      Contributors
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "start",
+                      }}
+                    >
+                      {contributors.map((contributor, index) => (
+                        <Box
+                          key={index}
+                          sx={{ mb: 1, display: "flex", alignItems: "center" }}
+                        >
+                          <Typography variant="body1">
+                            {contributor.name}
+                          </Typography>
+                          <ContributorLink
+                            href={contributor.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <LinkedInIcon fontSize="small" />
+                          </ContributorLink>
+                          <ContributorLink
+                            href={contributor.twitter}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <TwitterIcon fontSize="small" />
+                          </ContributorLink>
+                        </Box>
+                      ))}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="h6" align="center" gutterBottom>
+                      GitHub Repository
+                    </Typography>
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Link
+                        href="https://github.com/MohamedMagdy097/Edison"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <GitHubIcon sx={{ mr: 1 }} />
+                        View on GitHub
+                      </Link>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
           )}
         </AnimatePresence>
       </Box>

@@ -79,7 +79,7 @@ const CustomContainer = styled(Box)({
 	backgroundColor: '#1c1c1caa', // Consistent with the app's overall theme
 	borderRadius: '16px',
 	boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
-	maxWidth: '900px',
+	maxWidth: '1200px',
 	width: '100%',
 	margin: 'auto',
 	backdropFilter: 'blur(10px)',

@@ -174,6 +174,7 @@ const App: React.FC = () => {
 					/>
 				</Toolbar>
 			</AppBar>
+			<Background3/>
 			<Box
 				sx={{
 					// backgroundColor: "#0d0d0d", // Updated to a deeper black

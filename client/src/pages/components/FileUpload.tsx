@@ -225,14 +225,17 @@ const FileUpload: React.FC<FileUploadProps> = ({
             Generate your tutorial!
           </Typography>
         </Box>
-
-        <HoverBorderGradient
-          containerClassName="rounded-full mt-6 w-full"
-          as="button"
-          className="dark:bg-black bg-white text-black dark:text-white flex items-center justify-center space-x-2 w-full py-2"
-        >
-          <button type="submit" disabled={!file || loading} className="w-full h-full">Upload</button>
-        </HoverBorderGradient>
+        <div className="w-full text-center">
+          <button type="submit" disabled={!file || loading} className="w-[50%]">
+            <HoverBorderGradient
+              containerClassName="rounded-full mt-6 w-full"
+              as="button"
+              className="dark:bg-black bg-white text-black dark:text-white flex items-center justify-center space-x-2 w-half py-2"
+            >
+              Upload
+            </HoverBorderGradient>
+          </button>
+        </div>
       </Box>
     </form>
   );

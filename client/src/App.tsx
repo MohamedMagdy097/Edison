@@ -79,7 +79,6 @@ const CustomContainer = styled(Box)({
   alignItems: "center",
 });
 
-
 const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -104,6 +103,11 @@ const App: React.FC = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
           <CustomContainer>
             <Typography variant="h1" align="center" maxWidth={600}>

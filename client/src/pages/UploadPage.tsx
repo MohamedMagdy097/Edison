@@ -61,6 +61,8 @@ const UploadPage: React.FC = () => {
     useState<AbortController | null>(null);
   const [showImage, setShowImage] = useState<boolean>(true);
   const imageControls = useAnimation();
+
+
   useEffect(() => {
     if (components.length > 0) {
       const animateImage = async () => {
@@ -70,6 +72,7 @@ const UploadPage: React.FC = () => {
       animateImage();
     }
   }, [components, imageControls]);
+
   const handleFileChange = (file: File | null) => {
     setFile(file);
   };
@@ -170,12 +173,13 @@ const UploadPage: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Box sx={{ display: "flex", gap: 4 }}>
+      <Box className="flex flex-col md:flex-row gap-8">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={slideInFromLeft}
         >
+          {/* LEFT SIDE */}
           <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
             <FileUpload
               onFileChange={handleFileChange}
@@ -248,6 +252,7 @@ const UploadPage: React.FC = () => {
             )}
           </Box>
         </motion.div>
+        {/* DIVIDER */}
         <motion.div
           style={{ width: "1px", backgroundColor: "#e0e0e0" }}
           variants={fadeOutAndSlide}
@@ -256,6 +261,7 @@ const UploadPage: React.FC = () => {
         >
           <Divider orientation="vertical" flexItem />
         </motion.div>
+        {/* RIGHT SIDE */}
         <AnimatePresence>
           {showImage && (
             <Box

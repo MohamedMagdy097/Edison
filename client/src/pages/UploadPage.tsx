@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, CircularProgress, IconButton, Divider } from "@mui/material";
 import StopIcon from "@mui/icons-material/Stop";
 import { analyzeImage, getProjectDetails } from "../services/api";
@@ -6,7 +6,7 @@ import FileUpload from "./components/FileUpload";
 import ComponentList from "./components/ComponentList";
 import ProjectIdeasList from "./components/ProjectIdeasList";
 import ProjectTutorial from "./components/ProjectTutorial";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import robot from "../assets/Bot.webp";
 
 const UploadPage: React.FC = () => {
@@ -19,6 +19,16 @@ const UploadPage: React.FC = () => {
   const [ideasLoading, setIdeasLoading] = useState<boolean>(false);
   const [abortController, setAbortController] =
     useState<AbortController | null>(null);
+  const [showImage, setShowImage] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (components.length > 0) {
+      const timer = setTimeout(() => {
+        setShowImage(false);
+      }, 300); // Faster transition timing
+      return () => clearTimeout(timer);
+    }
+  }, [components]);
 
   const handleFileChange = (file: File | null) => {
     setFile(file);
@@ -89,6 +99,43 @@ const UploadPage: React.FC = () => {
     }
   };
 
+  const fadeOutAndSlide = {
+    initial: { opacity: 1, x: 0, scale: 1 },
+    exit: {
+      opacity: 0,
+      x: 50, // Slight slide to the left
+      scale: 0.95, // Subtle scale down
+      transition: {
+        duration: 0.2, // Faster fade out
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const slideInFromLeft = {
+    hidden: { opacity: 0, x: 50 }, // Start slightly off-screen to the right
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3, // Match this with the exit duration for smooth transition
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  const slideInFromRight = {
+    hidden: { opacity: 0, x: -50 }, // Start slightly off-screen to the left
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3, // Match this with the exit duration for smooth transition
+        ease: "easeInOut",
+      },
+    },
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -96,71 +143,117 @@ const UploadPage: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       <Box sx={{ display: "flex", gap: 4 }}>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <FileUpload
-            onFileChange={handleFileChange}
-            onAnalyzeImage={handleAnalyzeImage}
-            file={file}
-            loading={loading}
-          />
-
-          {components.length > 0 && <ComponentList components={components} />}
-
-          {projectIdeas.length > 0 && (
-            <ProjectIdeasList
-              projectIdeas={projectIdeas}
-              selectedProject={selectedProject}
-              onSelectProject={setSelectedProject}
-              onGetProjectDetails={handleGetProjectDetails}
-              onRefreshIdeas={handleRefreshIdeas}
-              loading={ideasLoading}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={slideInFromLeft}
+        >
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <FileUpload
+              onFileChange={handleFileChange}
+              onAnalyzeImage={handleAnalyzeImage}
+              file={file}
+              loading={loading}
             />
-          )}
 
-          {tutorial && <ProjectTutorial tutorial={tutorial} />}
+            <AnimatePresence>
+              {components.length > 0 && (
+                <motion.div
+                  key="componentList"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={slideInFromRight}
+                >
+                  <ComponentList components={components} />
+                </motion.div>
+              )}
 
-          {loading && (
-            <Box display="flex" justifyContent="center" mt={4}>
-              <CircularProgress sx={{ color: "#00bfa5" }} />
-            </Box>
-          )}
-          {loading && (
-            <Box mt={2} display="flex" justifyContent="center">
-              <IconButton
-                color="error"
-                onClick={handleStopStreaming}
-                sx={{
-                  border: "1px solid",
-                  borderRadius: "8px",
-                  color: "#00bfa5",
-                  borderColor: "#00bfa5",
-                }}
+              {projectIdeas.length > 0 && (
+                <motion.div
+                  key="projectIdeasList"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={slideInFromRight}
+                >
+                  <ProjectIdeasList
+                    projectIdeas={projectIdeas}
+                    selectedProject={selectedProject}
+                    onSelectProject={setSelectedProject}
+                    onGetProjectDetails={handleGetProjectDetails}
+                    onRefreshIdeas={handleRefreshIdeas}
+                    loading={ideasLoading}
+                  />
+                </motion.div>
+              )}
+
+              {tutorial && (
+                <motion.div
+                  key="projectTutorial"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={slideInFromRight}
+                >
+                  <ProjectTutorial tutorial={tutorial} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {loading && (
+              <Box display="flex" justifyContent="center" mt={4}>
+                <CircularProgress sx={{ color: "#00bfa5" }} />
+              </Box>
+            )}
+            {loading && (
+              <Box mt={2} display="flex" justifyContent="center">
+                <IconButton
+                  color="error"
+                  onClick={handleStopStreaming}
+                  sx={{
+                    border: "1px solid",
+                    borderRadius: "8px",
+                    color: "#00bfa5",
+                    borderColor: "#00bfa5",
+                  }}
+                >
+                  <StopIcon />
+                </IconButton>
+              </Box>
+            )}
+          </Box>
+        </motion.div>
+
+        <AnimatePresence>
+          {showImage && (
+            <>
+              <motion.div
+                style={{ width: "1px", backgroundColor: "#e0e0e0" }}
+                variants={fadeOutAndSlide}
+                initial="initial"
+                exit="exit"
               >
-                <StopIcon />
-              </IconButton>
-            </Box>
-          )}
-        </Box>
-        <Divider orientation="vertical" flexItem />
+                <Divider orientation="vertical" flexItem />
+              </motion.div>
 
-        {/* Right side: Before and After Image */}
-        <img
-          src={robot}
-          alt="robot"
-          style={{
-            maxWidth: "400px", // Fixed width
-            height: "460px", // Maintain aspect ratio
-            borderRadius: "50px", // Curved corners
-            boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)", // Shadow effect
-            transition: "transform 0.3s ease",
-          }}
-          // onMouseOver={(e) => {
-          //   (e.currentTarget as HTMLElement).style.transform = "scale(1.05)";
-          // }}
-          // onMouseOut={(e) => {
-          //   (e.currentTarget as HTMLElement).style.transform = "scale(1)";
-          // }}
-        />
+              {/* Right side: Before and After Image */}
+              <motion.img
+                src={robot}
+                alt="robot"
+                style={{
+                  maxWidth: "400px", // Fixed width
+                  height: "460px", // Maintain aspect ratio
+                  borderRadius: "50px", // Curved corners
+                  boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)", // Shadow effect
+                }}
+                variants={fadeOutAndSlide}
+                initial="initial"
+                exit="exit"
+              />
+            </>
+          )}
+        </AnimatePresence>
       </Box>
     </motion.div>
   );

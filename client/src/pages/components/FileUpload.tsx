@@ -230,7 +230,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             <HoverBorderGradient
               containerClassName="rounded-full mt-6 w-full"
               as="button"
-              className="dark:bg-black bg-white text-black dark:text-white flex items-center justify-center space-x-2 w-half py-2"
+              className="bg-black text-white flex items-center justify-center space-x-2 w-half py-2"
             >
               Upload
             </HoverBorderGradient>

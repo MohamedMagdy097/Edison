@@ -232,7 +232,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
               as="button"
               className="bg-black text-white flex items-center justify-center space-x-2 w-half py-2"
             >
-              Upload
+              Start Building
             </HoverBorderGradient>
           </button>
         </div>

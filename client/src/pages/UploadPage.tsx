@@ -248,6 +248,14 @@ const UploadPage: React.FC = () => {
             )}
           </Box>
         </motion.div>
+        <motion.div
+          style={{ width: "1px", backgroundColor: "#e0e0e0" }}
+          variants={fadeOutAndSlide}
+          initial="initial"
+          exit="exit"
+        >
+          <Divider orientation="vertical" flexItem />
+        </motion.div>
         <AnimatePresence>
           {showImage && (
             <Box
@@ -321,12 +329,12 @@ const UploadPage: React.FC = () => {
                     </Box>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="h6" align="center" gutterBottom>
+                    <Typography variant="h6" align="left" gutterBottom>
                       GitHub Repository
                     </Typography>
                     <Box
                       display="flex"
-                      justifyContent="center"
+                      justifyContent="start"
                       alignItems="center"
                     >
                       <Link

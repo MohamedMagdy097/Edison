@@ -75,7 +75,7 @@ const theme = createTheme({
 });
 
 const CustomContainer = styled(Box)({
-	padding: '40px',
+	padding: '10px 40px 40px 40px',
 	backgroundColor: '#1c1c1caa', // Consistent with the app's overall theme
 	borderRadius: '16px',
 	boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',

@@ -1,22 +1,23 @@
-import React from "react";
+import React from 'react';
 import {
-  AppBar,
-  Toolbar,
-  CssBaseline,
-  Typography,
-  Box,
-  IconButton,
-  Container,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
-import UploadPage from "./pages/UploadPage";
-import { motion } from "framer-motion";
-import logo from "./assets/logoz.png";
-import { Background } from "./pages/components/Background";
+	AppBar,
+	Toolbar,
+	CssBaseline,
+	Typography,
+	Box,
+	IconButton,
+	Container,
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import UploadPage from './pages/UploadPage';
+import { motion } from 'framer-motion';
+import logo from './assets/logoz.png';
+import { Background } from './pages/components/Background';
 import { BoxesCore } from './ui/background-boxes';
 import { BackgroundBoxes } from './pages/components/Background2';
 import { Background3 } from './pages/components/Background3';
+import { TextGenerateEffect } from './ui/text-generate-effect';
 
 const theme = createTheme({
 	palette: {
@@ -82,6 +83,9 @@ const CustomContainer = styled(Box)({
 	width: '100%',
 	margin: 'auto',
 	backdropFilter: 'blur(10px)',
+	display: 'flex',
+	flexDirection: 'column',
+	alignItems: 'center',
 });
 
 const App: React.FC = () => {
@@ -89,7 +93,7 @@ const App: React.FC = () => {
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			{/* <Background /> */}
-			
+
 			<AppBar position='sticky'>
 				<Toolbar className=' bg-black'>
 					{/* <IconButton edge="start" color="inherit" aria-label="menu">
@@ -170,7 +174,6 @@ const App: React.FC = () => {
 					/>
 				</Toolbar>
 			</AppBar>
-			<Background3/>
 			<Box
 				sx={{
 					// backgroundColor: "#0d0d0d", // Updated to a deeper black
@@ -179,12 +182,10 @@ const App: React.FC = () => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					padding: '40px 0',
+					opacity: 0.9,
 				}}
 			>
-				{/* <BackgroundBoxes/> */}
-				
 				<motion.div
-					// className='backdrop-blur-md bg-opacity-0 bg-red-300'
 					initial={{ opacity: 0, scale: 0.95 }}
 					animate={{ opacity: 1, scale: 1 }}
 					transition={{ duration: 0.8 }}
@@ -193,10 +194,9 @@ const App: React.FC = () => {
 						<Typography
 							variant='h1'
 							align='center'
+							maxWidth={600}
 						>
-							Click. Upload. Innovate.
-							<br />
-							It's That Simple.
+							<TextGenerateEffect words="Click. Upload. Innovate. It's That Simple." />
 						</Typography>
 						<Typography
 							variant='h6'

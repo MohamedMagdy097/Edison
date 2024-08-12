@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
+import remarkGfm from "remark-gfm";
 import RefreshIcon from "@mui/icons-material/Refresh";
 
 interface ProjectIdeasListProps {
@@ -76,22 +77,30 @@ const ProjectIdeasList: React.FC<ProjectIdeasListProps> = ({
           </CardContent>
         </Card>
       </motion.div>
-      <List className="space-y-2">
+      <List className="space-y-2 w-full">
         {projectIdeas.map((idea, index) => (
-          <React.Fragment key={index}>
+          <React.Fragment  key={index}>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               onClick={() => onSelectProject(idea)}
-              className={`hover:bg-[#305853] cursor-pointer rounded-lg shadow-md transition duration-300 ease-in-out transform ${
+              className={`hover:bg-[#305853] cursor-pointer rounded-lg shadow-md transition duration-300 ease-in-out transform w-full ${
                 selectedProject === idea ? "bg-[#003f38]" : "bg-transparent"
               }`}
             >
-              <ListItem>
+              <ListItem className="w-full">
                 <ListItemText
-                  primary={<ReactMarkdown>{idea}</ReactMarkdown>}
-                  primaryTypographyProps={{ className: "text-gray-300" }}
+                  className="w-full"
+                  primary={
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      className="prose max-w-none prose-invert w-full"
+                    >
+                      {idea}
+                    </ReactMarkdown>
+                  }
+                  primaryTypographyProps={{ className: "text-gray-300 w-full" }}
                 />
               </ListItem>
               {index < projectIdeas.length - 1 && (

@@ -203,7 +203,7 @@ const App: React.FC = () => {
 							align='center'
 							paragraph
 						>
-							Snap. Upload. Innovate. Let our AI analyze your Raspberry Pi
+							Let our AI analyze your Raspberry Pi
 							components and conjure up personalized project ideas with detailed
 							PDF guides.
 						</Typography>

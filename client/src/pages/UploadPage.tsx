@@ -6,9 +6,8 @@ import FileUpload from "./components/FileUpload";
 import ComponentList from "./components/ComponentList";
 import ProjectIdeasList from "./components/ProjectIdeasList";
 import ProjectTutorial from "./components/ProjectTutorial";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import robot from "../assets/Bot.webp";
-
 const UploadPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [components, setComponents] = useState<string[]>([]);
@@ -20,43 +19,38 @@ const UploadPage: React.FC = () => {
   const [abortController, setAbortController] =
     useState<AbortController | null>(null);
   const [showImage, setShowImage] = useState<boolean>(true);
-
+  const imageControls = useAnimation();
   useEffect(() => {
     if (components.length > 0) {
-      const timer = setTimeout(() => {
+      const animateImage = async () => {
+        await imageControls.start({ opacity: 0, scale: 0.9 });
         setShowImage(false);
-      }, 300); // Faster transition timing
-      return () => clearTimeout(timer);
+      };
+      animateImage();
     }
-  }, [components]);
-
+  }, [components, imageControls]);
   const handleFileChange = (file: File | null) => {
     setFile(file);
   };
-
   const handleAnalyzeImage = async (event?: React.FormEvent) => {
     if (event) event.preventDefault();
     if (file) {
       setLoading(true);
       const data = await analyzeImage(file);
       console.log("Project Ideas Response: ", data);
-
       const componentsData = data.components || [];
       const projectIdeasData = data.project_ideas || [];
-
       setComponents(componentsData);
       setProjectIdeas(projectIdeasData);
       setLoading(false);
     }
   };
-
   const handleGetProjectDetails = async () => {
     if (file && selectedProject !== null) {
       setLoading(true);
       setTutorial("");
       const controller = new AbortController();
       setAbortController(controller);
-
       try {
         await getProjectDetails(
           file,
@@ -80,62 +74,55 @@ const UploadPage: React.FC = () => {
       setLoading(false);
     }
   };
-
   const handleRefreshIdeas = async () => {
     if (file) {
       setIdeasLoading(true);
       const data = await analyzeImage(file);
       console.log("Refreshed Project Ideas: ", data);
-
       const projectIdeasData = data.project_ideas || [];
       setProjectIdeas(projectIdeasData);
       setIdeasLoading(false);
     }
   };
-
   const handleStopStreaming = () => {
     if (abortController) {
       abortController.abort();
     }
   };
-
   const fadeOutAndSlide = {
     initial: { opacity: 1, x: 0, scale: 1 },
     exit: {
       opacity: 0,
-      x: 50, // Slight slide to the left
-      scale: 0.95, // Subtle scale down
+      x: 20,
+      scale: 0.9,
       transition: {
-        duration: 0.2, // Faster fade out
-        ease: "easeInOut",
+        duration: 0.3,
+        ease: "easeOut",
       },
     },
   };
-
   const slideInFromLeft = {
-    hidden: { opacity: 0, x: 50 }, // Start slightly off-screen to the right
+    hidden: { opacity: 0, x: 50 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        duration: 0.3, // Match this with the exit duration for smooth transition
+        duration: 0.3,
         ease: "easeInOut",
       },
     },
   };
-
   const slideInFromRight = {
-    hidden: { opacity: 0, x: -50 }, // Start slightly off-screen to the left
+    hidden: { opacity: 0, x: -50 },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        duration: 0.3, // Match this with the exit duration for smooth transition
+        duration: 0.3,
         ease: "easeInOut",
       },
     },
   };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -155,7 +142,6 @@ const UploadPage: React.FC = () => {
               file={file}
               loading={loading}
             />
-
             <AnimatePresence>
               {components.length > 0 && (
                 <motion.div
@@ -168,7 +154,6 @@ const UploadPage: React.FC = () => {
                   <ComponentList components={components} />
                 </motion.div>
               )}
-
               {projectIdeas.length > 0 && (
                 <motion.div
                   key="projectIdeasList"
@@ -187,7 +172,6 @@ const UploadPage: React.FC = () => {
                   />
                 </motion.div>
               )}
-
               {tutorial && (
                 <motion.div
                   key="projectTutorial"
@@ -200,7 +184,6 @@ const UploadPage: React.FC = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-
             {loading && (
               <Box display="flex" justifyContent="center" mt={4}>
                 <CircularProgress sx={{ color: "#00bfa5" }} />
@@ -224,7 +207,6 @@ const UploadPage: React.FC = () => {
             )}
           </Box>
         </motion.div>
-
         <AnimatePresence>
           {showImage && (
             <>
@@ -236,20 +218,18 @@ const UploadPage: React.FC = () => {
               >
                 <Divider orientation="vertical" flexItem />
               </motion.div>
-
-              {/* Right side: Before and After Image */}
               <motion.img
                 src={robot}
                 alt="robot"
                 style={{
-                  maxWidth: "400px", // Fixed width
-                  height: "460px", // Maintain aspect ratio
-                  borderRadius: "50px", // Curved corners
-                  boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)", // Shadow effect
+                  maxWidth: "400px",
+                  height: "460px",
+                  borderRadius: "50px",
+                  boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.3)",
                 }}
-                variants={fadeOutAndSlide}
-                initial="initial"
-                exit="exit"
+                initial={{ opacity: 1, scale: 1 }}
+                animate={imageControls}
+                exit={{ opacity: 0, scale: 0.9 }}
               />
             </>
           )}
@@ -258,5 +238,4 @@ const UploadPage: React.FC = () => {
     </motion.div>
   );
 };
-
 export default UploadPage;

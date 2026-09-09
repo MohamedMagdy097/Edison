@@ -1,7 +1,7 @@
 # Edison: The Creative Electronics Companion
 
 ![Banner](./docs/banner.png)
-
+[Watch the Introduction Video](https://youtu.be/HfTonOn_Yf8)
 ## Project Overview
 
 Welcome to Edison: The Creative Electronics Companion! This project is designed to assist users in creating exciting projects with various electronic parts. By utilizing advanced Language Models (LLMs) and the Gemini API, our system identifies electronic components from images and provides users with detailed, step-by-step project tutorials. Additionally, LlamaIndex is employed for effective data management and retrieval, ensuring an interactive and seamless user experience.
